@@ -29,9 +29,9 @@ python3 main.py start
 Программа выводит в консоль лог работы. 
 
 ```
-INFO:root: Success publish: comics 89 was publised
+INFO:root: Success publish: №89 published
 ```
-После этого сообщения пост размещен в группу.
+После этого сообщения комикс размещен в группу.
 
 ### Цель проекта
 

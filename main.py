@@ -45,7 +45,7 @@ def save_picture(url, comics_number, path='images/'):
     if response.ok:
         with open(filename, 'wb') as f:
             f.write(response.content)
-            logging.info('download & saved ' + filename)
+            logging.info('Download & saved ' + filename)
         return filename
     else:
         return None
@@ -80,7 +80,7 @@ def download_comics(comics_number):
     image_link = response.json()['img']
     comment = response.json()['alt']
     img_file_pathname = save_picture(url=image_link, comics_number=comics_number)
-    return img_file_pathname, image_link, comment
+    return img_file_pathname, comment
 
 
 def get_args_parser():
@@ -97,7 +97,7 @@ def main():
     GROUP_ID_VK = os.getenv("GROUP_ID_VK")
     GROUP_ID_ALBUM_VK = os.getenv("GROUP_ID_ALBUM_VK")
     comics_number = get_random_comics_number()
-    img_file_pathname, image_link, comment = download_comics(comics_number)
+    img_file_pathname, comment = download_comics(comics_number)
     post_vkontakte(login=LOGIN_VK, password=PASSWORD_VK,
                    token=TOKEN_VK,
                    vk_group=GROUP_ID_VK,
@@ -105,6 +105,7 @@ def main():
                    content_text=comment,
                    content_img_file_pathname=img_file_pathname)
     os.remove(img_file_pathname)
+    logging.info('Success publish: №{} published'.format(comics_number))
 
 
 if __name__ == '__main__':
@@ -116,4 +117,4 @@ if __name__ == '__main__':
     if args.command == "start":
         main()
     else:
-        logging.info('wrong command - only 1 command: start')
+        logging.info('Wrong command - only 1 command: start')

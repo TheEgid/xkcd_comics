@@ -98,7 +98,8 @@ def main():
     GROUP_ID_ALBUM_VK = os.getenv("GROUP_ID_ALBUM_VK")
     comics_number = get_random_comics_number()
     img_file_pathname, comment = download_comics(comics_number)
-    post_vkontakte(login=LOGIN_VK, password=PASSWORD_VK,
+    post_vkontakte(login=LOGIN_VK,
+                   password=PASSWORD_VK,
                    token=TOKEN_VK,
                    vk_group=GROUP_ID_VK,
                    vk_group_album=GROUP_ID_ALBUM_VK,

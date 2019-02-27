@@ -5,17 +5,11 @@ import random
 import vk_api
 from dotenv import load_dotenv
 import logging
-import argparse
 
 
 class VKApiPostingError(Exception):
     """Declare special exception."""
     pass
-
-
-def get_file_extension(url):
-    """Get extension from url."""
-    return '.' + url.split('.')[-1]
 
 
 def get_comics_total_qty():
@@ -36,11 +30,10 @@ def get_random_comics_number():
 
 
 def save_picture(url, comics_number, path='images/'):
-    path = path + str(comics_number)
-    dir_name = path.split('/')[0]
-    if not os.path.exists(dir_name):
-         os.makedirs(dir_name)
-    filename = path + get_file_extension(url)
+    os.path.join(path, str(comics_number))
+    dir_name = os.path.dirname(path)
+    os.makedirs(dir_name, exist_ok=True)
+    filename = path + os.path.splitext(url)[1]
     response = requests.get(url)
     if response.ok:
         with open(filename, 'wb') as f:
@@ -83,13 +76,10 @@ def download_comics(comics_number):
     return img_file_pathname, comment
 
 
-def get_args_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('command', type=str, help='only 1 command: start')
-    return parser
-
-
 def main():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    sys.path.insert(0, os.path.split(dir_path)[0])
+    logging.basicConfig(level=logging.INFO)
     load_dotenv()
     LOGIN_VK = os.getenv("LOGIN_VK")
     PASSWORD_VK = os.getenv("PASSWORD_VK")
@@ -110,12 +100,4 @@ def main():
 
 
 if __name__ == '__main__':
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    sys.path.insert(0, os.path.split(dir_path)[0])
-    logging.basicConfig(level=logging.INFO)
-    arg_parser = get_args_parser()
-    args = arg_parser.parse_args()
-    if args.command == "start":
-        main()
-    else:
-        logging.info('Wrong command - only 1 command: start')
+    main()

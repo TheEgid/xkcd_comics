@@ -50,7 +50,7 @@ def post_vkontakte(login, password, token, vk_group, vk_group_album,
     try:
         vk_session.auth(token_only=True)
     except vk_api.exceptions:
-         vk_api.AuthError()
+         raise vk_api.AuthError()
     vk = vk_session.get_api()
     upload = vk_api.VkUpload(vk_session)
     img = upload.photo(photos=content_img_file_pathname,
